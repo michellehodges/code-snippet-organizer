@@ -1,0 +1,37 @@
+/*font-family: 'Mukta Mahee', sans-serif;
+font-family: 'Raleway', sans-serif;
+font-family: 'Titillium Web', sans-serif;*/
+
+
+#sign-in {
+  text-align: right;
+  margin-right: 10px;
+  margin-top: 20px;
+}
+
+.mainpage {
+  background-image: url("https://image.freepik.com/free-photo/happy-guy-with-thumb-up-on-white-background_1149-197.jpg");
+  background-repeat: no-repeat;
+  background-position: top 0px right 170px;
+}
+
+.registration-heading {
+  text-align: center;
+}
+
+.signup-wrapper {
+  text-align: center
+}
+
+.signup {
+  margin: 10px;
+  width: 20%;
+}
+
+.success-wrapper {
+  text-align: center;
+}
+
+.search {
+  width: 30%
+}

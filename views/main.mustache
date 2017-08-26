@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Mukta+Mahee|Raleway|Titillium+Web" rel="stylesheet">
+  </head>
+  <body>
+    <h1 class="greeting">Welcome back, {{ username }}!</h1>
+
+    <h3>Create a new snippet</h3>
+    <form method="post" action="/create">
+      <textarea name="textarea" rows="10" cols="200">Type your snippet here...</textarea><br>
+      <input type="submit" value="Post your snippet" class="create-btn">
+    </form>
+
+    <form method="post" action="/search">
+      <input type="text" name="search" placeholder="Search snippets by language or tag..." class="search">
+      <input type="submit" value="Search" class="search-btn">
+    </form>
+
+    <h3> Snippets: </h3>
+    <form method="post" action="/filter">
+      <label for="filter">Filter snippets by:</label>
+      <select name="filter" id="filter">
+        <option>All</option>
+        <option>Mine</option>
+        <option>Friends</option>
+        <option>Favorited</option>
+      </select>
+    </form>
+    <ul>
+        {{ #snippets }}
+        <li>
+          <span>"{{ msg }}" -- {{ username }}</span>
+        </li>
+        {{ /snippets }}
+    </ul>
+
+    <form method="post" action="/logout">
+    <input type="submit" value="Log out">
+
+  </body>
+</html>
