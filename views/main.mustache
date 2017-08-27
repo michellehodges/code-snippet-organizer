@@ -31,7 +31,10 @@
     <ul>
         {{ #snippets }}
         <li>
-          <span>"{{ msg }}" -- {{ username }}</span>
+          <h4 id="snippet-title">{{ title }}</h4>
+          <h5 id="snippet-details">Author: {{ owner }} Posted on: {{ timestamp }}</h5>
+          <span>{{ body }}</span>
+          <span>Notes from author: {{ notes }}</span>
         </li>
         {{ /snippets }}
     </ul>
