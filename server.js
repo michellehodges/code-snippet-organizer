@@ -7,9 +7,6 @@ const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 
 const server = express();
-//
-// const users = [ ARRAY OF OBJECTS FROM DATABASE collections: users]
-// const snippets = [ARRAY OF OBJECTS FROM DATABASE collections: snippets ]
 
 let User = require('./user-schema');
 let Snippet = require('./snippet-schema');
@@ -38,21 +35,19 @@ server.get('/main', function(request, response) {
   if (request.session.who !== undefined) {
     Snippet.find({},
       (function(err, results){
-        for (let i = 0; i < results.length; i++) {
-          response.render('main', {
-            username: request.session.who[0].username,
-            owner: results[i].owner,
-            title: results[i].title,
-            timestamp: results[i].timestamp,
-            body: results[i].body,
-            notes: results[i].notes
-            })
-          }
+        response.render('main', {
+          snippets: results,
+          username: request.session.who[0].username,
+          })
       })
     )
   } else {
     response.redirect('/');
   }
+})
+
+server.get('/register', function(request, response) {
+  response.render('register')
 })
 
 server.get('/logout', function(request, response) {
@@ -86,17 +81,18 @@ server.post('/main', function(request, response) {
 
 
 server.post('/register', function(request, response) {
-
-  //TODO: NEED TO FIGURE OUT HOW TO PUSH TO DATABASE
-  const username = request.body.newUsername;
-  const password = request.body.newPassword;
-
-  if (username !== null && password !== null)
-    users.push({
+  if (request.body.newUsername !== null && request.body.newPassword !== null) {
+    User.create({
       username: request.body.newUsername,
-      password: request.body.newPassword,
+      password: request.body.newPassword
     })
-  console.log(users)
+      .then(function(newUser){
+        console.log(newUser)
+      })
+      .catch(function(err){
+        console.log(err)
+      })
+    }
   response.redirect('/register')
 })
 
