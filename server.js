@@ -60,14 +60,10 @@ server.post('/main', function(request, response) {
     console.log("Empty User/Pass");
     response.redirect('/')
   } else {
-
   User.find(
     {'username': request.body.username, 'password': request.body.password},
     function(err, user) {
-      if (err) {
-        response.redirect('/')
-      }
-
+      if (err) { response.redirect('/') }
       if (user.length === 0) {
         console.log('User not found!');
         response.render('welcome', { failed: "Login Failed."});
@@ -77,8 +73,7 @@ server.post('/main', function(request, response) {
       }
     })
   }
-  })
-
+})
 
 server.post('/register', function(request, response) {
   if (request.body.newUsername !== null && request.body.newPassword !== null) {
@@ -93,18 +88,54 @@ server.post('/register', function(request, response) {
         console.log(err)
       })
     }
-  response.redirect('/register')
+  response.render('success')
 })
 
 server.post('/create', function (request, response) {
-
-  //TODO: EDIT THIS FOR SNIPPETS AND TO PUSH TO DATABASE
-  snippets.push({
-    snippet: request.body.snippet,
-    username: request.session.who.username
-  });
+  console.log(request.body);
+  Snippet.create({
+    owner: request.session.who[0].username,
+    title: request.body.title,
+    body: request.body.body,
+    notes: request.body.notes,
+    language: request.body.language,
+    tags: request.body.tags.split(',')
+  })
+    .then(function(newSnippet){
+      console.log(newSnippet)
+    })
+    .catch(function(err){
+      console.log(err)
+    })
   response.redirect('/main');
 })
+
+server.post('/search', function(request, response) {
+  if (request.body.search === '') {
+    console.log("Empty search query");
+    response.redirect('/main');
+  } else {
+    //Radio boxes for search term like below
+    //if radio box 'user'
+    //Snipper.find(this.username === mischymangoes )
+    Snippet.find().$where(function () {
+      return ;
+    })
+  }
+})
+
+
+// server.post('/filter', function(request, response) {
+//
+// })
+
+// server.post('/sort', function(request, response) {
+//
+// })
+
+// server.post('/favorite', function(request, response) {
+//
+// })
 
 server.post('/logout', function(request, response) {
   request.session.destroy(function() {

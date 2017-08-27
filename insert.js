@@ -14,27 +14,27 @@ let User = require('./mongoose');
 
 mongoose.connect('mongodb://localhost:27017/test');
 
-User.create({
-  username: "mischymangoes",
-  password: "poop"
-})
-  .then(function(newUser){
-    console.log(newUser)
-  })
-  .catch(function(err){
-    console.log(err)
-  })
-
-User.create({
-  username: "abc",
-  password: "123"
-})
-  .then(function(newUser){
-    console.log(newUser)
-  })
-  .catch(function(err){
-    console.log(err)
-  })
+// User.create({
+//   username: "mischymangoes",
+//   password: "poop"
+// })
+//   .then(function(newUser){
+//     console.log(newUser)
+//   })
+//   .catch(function(err){
+//     console.log(err)
+//   })
+//
+// User.create({
+//   username: "abc",
+//   password: "123"
+// })
+//   .then(function(newUser){
+//     console.log(newUser)
+//   })
+//   .catch(function(err){
+//     console.log(err)
+//   })
 
 // Snippet.create(
 // Get the owner name from the user session.
@@ -68,22 +68,22 @@ User.create({
 //     console.log(err)
 //   })
 //
-// Snippet.create({
-//   owner: "mischymangoes",
-//   title: "Converting from Celcius to Fahrenheit",
-//   body: `
-//     function toCelsius(fahrenheit) {
-//       return (5/9) * (fahrenheit-32);
-//     }
-//     document.getElementById("demo").innerHTML = toCelsius;
-//   `,
-//   notes: "Accessing a function without () will return the function definition instead of the function result",
-//   language: "javascript",
-//   tags: ["javascript", "function", "beginner"],
-// })
-//   .then(function(newSnippet){
-//     console.log(newSnippet)
-//   })
-//   .catch(function(err){
-//     console.log(err)
-//   })
+Snippet.create({
+  owner: "mischymangoes",
+  title: "Converting from Celcius to Fahrenheit",
+  body: `
+    function toCelsius(fahrenheit) {
+      return (5/9) * (fahrenheit-32);
+    }
+    document.getElementById("demo").innerHTML = toCelsius;
+  `,
+  notes: "Accessing a function without () will return the function definition instead of the function result",
+  language: "javascript",
+  tags: ["javascript", "function", "beginner"],
+})
+  .then(function(newSnippet){
+    console.log(newSnippet)
+  })
+  .catch(function(err){
+    console.log(err)
+  })

@@ -9,12 +9,16 @@
 
     <h3>Create a new snippet</h3>
     <form method="post" action="/create">
-      <textarea name="textarea" rows="10" cols="200">Type your snippet here...</textarea><br>
+      <input type="text" name="title" placeholder="Enter title"><br>
+      <textarea name="body" rows="10" cols="200" placeholder="Type your snippet here..."></textarea><br>
+      <textarea name="notes" rows="3" cols="200" placeholder="Add notes here..."></textarea><br>
+      <input type="text" name="language" placeholder="Enter language">
+      <input type="text" name="tags" placeholder="Enter tags, separated by commas">
       <input type="submit" value="Post your snippet" class="create-btn">
     </form>
 
     <form method="post" action="/search">
-      <input type="text" name="search" placeholder="Search snippets by language or tag..." class="search">
+      <input type="text" name="search" placeholder="Search snippets by username, language or tag..." class="search">
       <input type="submit" value="Search" class="search-btn">
     </form>
 
@@ -28,13 +32,25 @@
         <option>Favorited</option>
       </select>
     </form>
+    <form method="post" action="/sort">
+      <label for="sort">Sort snippets by:</label>
+      <select name="sort" id="sort">
+        <option>Date: Ascending</option>
+        <option>Date: Descending</option>
+        <option>Most favorited</option>
+        <option>Least favorited</option>
+      </select>
+    </form>
     <ul>
         {{ #snippets }}
         <li>
           <h4 id="snippet-title">{{ title }}</h4>
-          <h5 id="snippet-details">Author: {{ owner }} Posted on: {{ timestamp }}</h5>
-          <span>{{ body }}</span>
+          <h5 id="snippet-details">Language: {{ language }} Author: {{ owner }} Posted on: {{ timestamp }}</h5>
+          <span>{{ body }}</span><br>
           <span>Notes from author: {{ notes }}</span>
+          <form method="post" action="/favorite">
+            <input type="submit" value="Favorite this snippet" class="fave-btn">
+          </form>
         </li>
         {{ /snippets }}
     </ul>
