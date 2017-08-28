@@ -155,7 +155,7 @@ server.post('/search', function(request, response) {
     Snippet.find({tags: request.body.search}, function(err, searchResults) {
       if (searchResults.length === 0) {
         response.render('main', {
-          noResults: "Sorry, we can't find any snippets that matches your search.", 
+          noResults: "Sorry, we can't find any snippets that matches your search.",
           username: request.session.who[0].username
         })
       } else {
@@ -172,12 +172,44 @@ server.post('/search', function(request, response) {
   }
 })
 
-// server.post('/filter', function(request, response) {
-//
-// })
+server.post('/filter', function(request, response) {
+  if (request.body.filtertype === 'all') {
+    Snippet.find({}, function(err, results) {
+        response.render('main', {
+          snippets: results,
+          username: request.session.who[0].username,
+          })
+      })
+  } else if (request.body.filtertype === 'mine') {
+    Snippet.find({owner: request.session.who[0].username}, function(err, results){
+        response.render('main', {
+          snippets: results,
+          username: request.session.who[0].username,
+          })
+      })
+  } else if (request.body.filtertype === 'friends') {
+    Snippet.find({owner: {$nin: request.session.who[0].username}}, function(err, results){
+        response.render('main', {
+          snippets: results,
+          username: request.session.who[0].username,
+          })
+      })
+  } else if (request.body.filtertype === 'favorited') {
+    //TODO: edit this function
+    Snippet.find({}, function(err, results) {
+        response.render('main', {
+          snippets: results,
+          username: request.session.who[0].username,
+          })
+      })
+  } else { response.render('main', { noResults: "Sorry, we can't find any snippets that matches your search." }) }
+})
+
 
 // server.post('/sort', function(request, response) {
-//
+//Products.find({'username': username1}).sort('-date').exec(function(err, docs){
+//     res.render('profile', { title: 'Products', products: docs, flashmsg: msg});
+// });
 // })
 
 // server.post('/favorite', function(request, response) {
