@@ -66,7 +66,7 @@ server.post('/main', function(request, response) {
       if (err) { response.redirect('/') }
       if (user.length === 0) {
         console.log('User not found!');
-        response.render('welcome', { failed: "Login Failed."});
+        response.render('welcome', { failed: "Username or password not found. Please try again."});
       } else {
         request.session.who = user;
         response.redirect('/main')
@@ -93,37 +93,70 @@ server.post('/register', function(request, response) {
 
 server.post('/create', function (request, response) {
   console.log(request.body);
-  Snippet.create({
-    owner: request.session.who[0].username,
-    title: request.body.title,
-    body: request.body.body,
-    notes: request.body.notes,
-    language: request.body.language,
-    tags: request.body.tags.split(',')
-  })
-    .then(function(newSnippet){
-      console.log(newSnippet)
+  if ((request.body.title.length != 0) && (request.body.body.length != 0) && (request.body.language.length != 0) && (request.body.tags.length != 0)) {
+    Snippet.create({
+      owner: request.session.who[0].username,
+      title: request.body.title,
+      body: request.body.body,
+      notes: request.body.notes,
+      language: request.body.language,
+      tags: request.body.tags.split(',')
     })
-    .catch(function(err){
-      console.log(err)
-    })
-  response.redirect('/main');
-})
+      .then(function(newSnippet){
+        console.log(newSnippet)
+      })
+      .catch(function(err){
+        console.log(err)
+      })
+      response.redirect('/main');
+  } else if (request.body.title.length === 0) {
+    response.render('main', { needTitle: "A title is required." });
+  } else if (request.body.body.length === 0) {
+    response.render('main', { needBody: "Body to snippet is required." });
+  } else if (request.body.language.length === 0) {
+  response.render('main', { needLanguage: "Language is required." });
+  } else if (request.body.tags.length === 0) {
+  response.render('main', { needTags: "At least one tag is required." });
+  }
+});
 
 server.post('/search', function(request, response) {
   if (request.body.search === '') {
-    console.log("Empty search query");
     response.redirect('/main');
+  } else if (request.body.searchtype === 'username'){
+    Snippet.find({owner: request.body.search}, function(err, searchResults) {
+      console.log(searchResults)
+      if (searchResults.length === 0) {
+        response.render('main', {
+        noResults: "Sorry, we can't find any snippets that matches your search."
+        })
+      } else {
+        response.render('main', {
+          snippets: searchResults,
+          username: request.session.who[0].username
+        })
+      }
+    })
+  } else if (request.body.searchtype === 'language'){
+    Snippet.find({language: request.body.search}, function(err, searchResults) {
+      response.render('main', {
+        snippets: searchResults,
+        username: request.session.who[0].username
+      })
+    })
+  } else if (request.body.searchtype === 'tag'){
+    Snippet.find({tags: request.body.search}, function(err, searchResults) {
+      response.render('main', {
+        snippets: searchResults,
+        username: request.session.who[0].username
+      })
+    })
   } else {
-    //Radio boxes for search term like below
-    //if radio box 'user'
-    //Snipper.find(this.username === mischymangoes )
-    Snippet.find().$where(function () {
-      return ;
+    response.render('main', {
+      noResults: "Sorry, we can't find any snippets that matches your search."
     })
   }
 })
-
 
 // server.post('/filter', function(request, response) {
 //
