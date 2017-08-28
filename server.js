@@ -125,10 +125,10 @@ server.post('/search', function(request, response) {
     response.redirect('/main');
   } else if (request.body.searchtype === 'username'){
     Snippet.find({owner: request.body.search}, function(err, searchResults) {
-      console.log(searchResults)
       if (searchResults.length === 0) {
         response.render('main', {
-        noResults: "Sorry, we can't find any snippets that matches your search."
+          noResults: "Sorry, we can't find any snippets that matches your search.",
+          username: request.session.who[0].username
         })
       } else {
         response.render('main', {
@@ -139,17 +139,31 @@ server.post('/search', function(request, response) {
     })
   } else if (request.body.searchtype === 'language'){
     Snippet.find({language: request.body.search}, function(err, searchResults) {
-      response.render('main', {
-        snippets: searchResults,
-        username: request.session.who[0].username
-      })
+      if (searchResults.length === 0) {
+        response.render('main', {
+          noResults: "Sorry, we can't find any snippets that matches your search.",
+          username: request.session.who[0].username
+        })
+      } else {
+        response.render('main', {
+          snippets: searchResults,
+          username: request.session.who[0].username
+        })
+      }
     })
   } else if (request.body.searchtype === 'tag'){
     Snippet.find({tags: request.body.search}, function(err, searchResults) {
-      response.render('main', {
-        snippets: searchResults,
-        username: request.session.who[0].username
-      })
+      if (searchResults.length === 0) {
+        response.render('main', {
+          noResults: "Sorry, we can't find any snippets that matches your search.", 
+          username: request.session.who[0].username
+        })
+      } else {
+        response.render('main', {
+          snippets: searchResults,
+          username: request.session.who[0].username
+        })
+      }
     })
   } else {
     response.render('main', {
