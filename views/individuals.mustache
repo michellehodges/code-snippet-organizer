@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Mukta+Mahee|Raleway|Titillium+Web" rel="stylesheet">
+  </head>
+  <body>
+    {{#snippet}}
+    <h1>Now viewing: "{{ title }}"</h1>
+    <h5>Language: {{ language }}</h5>
+    <h5>Author: {{ owner }}</h5>
+    <h5>Posted on: {{ timestamp }}</h5>
+    <span>{{ body }}</span><br>
+    <span>Notes from author: {{ notes }}</span>
+    {{/snippet}}
+    <form method="post" action="/favorite">
+      <input type="submit" value="Favorite this snippet" class="fave-btn" name="fave">
+    </form>
+
+    <form method="post" action="/logout">
+    <input type="submit" value="Log out">
+
+  </body>
+</html>

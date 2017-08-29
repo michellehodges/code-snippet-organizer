@@ -5,24 +5,24 @@
     <link href="https://fonts.googleapis.com/css?family=Mukta+Mahee|Raleway|Titillium+Web" rel="stylesheet">
   </head>
   <body>
-    <h1 class="greeting">Welcome back, {{ username }}!</h1>
+    <h1 id="greeting">Welcome back, {{ username }}!</h1>
 
-    <h3>Create a new snippet</h3>
+    <h3 class="subtitles-main"> Create a new snippet </h3>
     <form method="post" action="/create">
       <input type="text" name="title" placeholder="Enter title"><br>
-      <span id="need-title">{{ needTitle }}</span><br>
+      <span class="required">{{ needTitle }}</span><br>
       <textarea name="body" rows="10" cols="200" placeholder="Type your snippet here..."></textarea><br>
-      <span id="need-body">{{ needBody }}</span><br>
+      <span class="required">{{ needBody }}</span><br>
       <textarea name="notes" rows="3" cols="200" placeholder="Add notes here..."></textarea><br>
       <input type="text" name="language" placeholder="Enter language"><br>
-      <span id="need-language">{{ needLanguage }}</span><br>
+      <span class="required">{{ needLanguage }}</span><br>
       <input type="text" name="tags" placeholder="Enter tags, separated by commas"><br>
-      <span id="need-tags">{{ needTags }}</span><br>
+      <span class="required">{{ needTags }}</span><br>
       <input type="submit" value="Post your snippet" class="create-btn">
     </form>
 
 
-    <h3> Snippets: </h3>
+    <h3 class="subtitles-main"> Snippets from your circle </h3>
     <form method="post" action="/search">
       <label for="search">Search snippets by:</label>
       <select class="ui dropdown" name="searchtype">
@@ -58,12 +58,14 @@
     <ul>
         {{ #snippets }}
         <li>
-          <h4 id="snippet-title">{{ title }}</h4>
-          <h5 id="snippet-details">Language: {{ language }} Author: {{ owner }} Posted on: {{ timestamp }}</h5>
+          <h4 id="snippet-title"><a href="/snippets/{{id}}">{{ title }}</a></h4>
+          <h5 class="snippet-details">Language: {{ language }}</h5>
+          <h5>Author: {{ owner }}</h5>
+          <h5>Posted on: {{ timestamp }}</h5>
           <span>{{ body }}</span><br>
           <span>Notes from author: {{ notes }}</span>
-          <form method="post" action="/favorite">
-            <input type="submit" value="Favorite this snippet" class="fave-btn">
+          <form method="post" action="/favorite/{{id}}">
+            <input type="submit" value="Favorite this snippet" class="fave-btn" name="fave">
           </form>
         </li>
         {{ /snippets }}

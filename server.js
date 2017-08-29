@@ -54,6 +54,16 @@ server.get('/logout', function(request, response) {
   response.render('logout')
 })
 
+server.get('/api', function(request, response) {
+  Snippet.find({}, function(err, results){ response.json(results) })
+})
+
+server.get('/snippets/:snippet_id', function(request, response) {
+  Snippet.find({ _id: request.params.snippet_id }, function(err, results){
+    response.render('individuals', { snippet: results })
+  })
+})
+
 //POST REQUESTS
 server.post('/main', function(request, response) {
   if (request.body.username === '' || request.body.password === '') {
@@ -175,46 +185,105 @@ server.post('/search', function(request, response) {
 server.post('/filter', function(request, response) {
   if (request.body.filtertype === 'all') {
     Snippet.find({}, function(err, results) {
+      if (results.length === 0) {
+        response.render('main', {
+          noResults: "Sorry, we can't find any snippets that matches your search.",
+          username: request.session.who[0].username
+        })
+      } else {
         response.render('main', {
           snippets: results,
           username: request.session.who[0].username,
           })
-      })
+      }
+    })
   } else if (request.body.filtertype === 'mine') {
     Snippet.find({owner: request.session.who[0].username}, function(err, results){
+      if (results.length === 0) {
+        response.render('main', {
+          noResults: "Sorry, we can't find any snippets that matches your search.",
+          username: request.session.who[0].username
+        })
+      } else {
         response.render('main', {
           snippets: results,
           username: request.session.who[0].username,
           })
-      })
+      }
+    })
   } else if (request.body.filtertype === 'friends') {
     Snippet.find({owner: {$nin: request.session.who[0].username}}, function(err, results){
+      if (results.length === 0) {
+        response.render('main', {
+          noResults: "Sorry, we can't find any snippets that matches your search.",
+          username: request.session.who[0].username
+        })
+      } else {
         response.render('main', {
           snippets: results,
           username: request.session.who[0].username,
           })
-      })
+      }
+    })
   } else if (request.body.filtertype === 'favorited') {
-    //TODO: edit this function
-    Snippet.find({}, function(err, results) {
+    Snippet.find({favorites: !null }, function(err, results) {
+      if (results.length === 0) {
+        response.render('main', {
+          noResults: "Sorry, we can't find any snippets that matches your search.",
+          username: request.session.who[0].username
+        })
+      } else {
         response.render('main', {
           snippets: results,
           username: request.session.who[0].username,
           })
-      })
-  } else { response.render('main', { noResults: "Sorry, we can't find any snippets that matches your search." }) }
+      }
+    })
+  }
 })
 
+server.post('/sort', function(request, response) {
+  if (request.body.sorttype === 'dateascending') {
+  Snippet.find().sort({timestamp: -1}).then(function(results) {
+    response.render('main', {
+      snippets: results,
+      username: request.session.who[0].username,
+      })
+    })
+  } else if (request.body.sorttype === 'datedescending') {
+  Snippet.find().sort({timestamp: 1}).then(function(results) {
+    response.render('main', {
+      snippets: results,
+      username: request.session.who[0].username,
+      })
+    })
 
-// server.post('/sort', function(request, response) {
-//Products.find({'username': username1}).sort('-date').exec(function(err, docs){
-//     res.render('profile', { title: 'Products', products: docs, flashmsg: msg});
-// });
-// })
+    //TODO: Cant get this damn function to work. 
+  } else if (request.body.sorttype === 'mostfavorited') {
+  Snippet.find().sort({$size: "favoritedBy"}).exec(function(err, results) {
+    response.render('main', {
+      snippets: results,
+      username: request.session.who[0].username,
+      })
+    })
+  } else if (request.body.sorttype === 'leastfavorited') {
+  Snippet.find().sort({$size: "favoritedBy"}).exec(function(err, results) {
+    response.render('main', {
+      snippets: results,
+      username: request.session.who[0].username,
+      })
+    })
+  }
+})
 
-// server.post('/favorite', function(request, response) {
-//
-// })
+server.post('/favorite/:snippet_id', function(request, response) {
+  Snippet.findOneAndUpdate(
+    { _id : request.params.snippet_id },
+    { $push: {favoritedBy: request.session.who[0].username}})
+    .then(function(results) {
+        response.redirect('/main')
+    });
+})
 
 server.post('/logout', function(request, response) {
   request.session.destroy(function() {
@@ -224,5 +293,9 @@ server.post('/logout', function(request, response) {
 
 //LISTEN TO PORT
 server.listen(3000, function() {
-  console.log("It's twerking!");
+  console.log("ayyyyyyy its party time");
 })
+
+
+//TODO:
+//2. Create testing file using Jest
