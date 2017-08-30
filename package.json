@@ -4,7 +4,7 @@
   "description": "",
   "main": "insert.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,10 @@
     "mongojs": "^2.4.1",
     "mongoose": "^4.11.8",
     "mustache-express": "^1.2.5",
-    "node-uuid": "^1.4.8"
+    "node-uuid": "^1.4.8",
+    "sort-json-array": "^0.1.7"
+  },
+  "devDependencies": {
+    "jest": "^20.0.4"
   }
 }

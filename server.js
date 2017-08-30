@@ -11,6 +11,8 @@ const server = express();
 let User = require('./user-schema');
 let Snippet = require('./snippet-schema');
 
+module.exports = server;
+
 //Server configure
 server.engine('mustache', mustache());
 server.set('views', './views');
@@ -257,23 +259,27 @@ server.post('/sort', function(request, response) {
       username: request.session.who[0].username,
       })
     })
-
-    //TODO: Cant get this damn function to work. 
+    } else if (request.body.sorttype === 'mostfavorited') {
+      Snippet.find({}, function(err, results) {
+        results.sort(function(a,b){
+          return a.favoritedBy.length < b.favoritedBy.length;
+        })
+        response.render('main', {
+      snippets: results,
+      username: request.session.who[0].username,
+      })
+    })
   } else if (request.body.sorttype === 'mostfavorited') {
-  Snippet.find().sort({$size: "favoritedBy"}).exec(function(err, results) {
-    response.render('main', {
-      snippets: results,
-      username: request.session.who[0].username,
+    Snippet.find({}, function(err, results) {
+      results.sort(function(a,b){
+        return a.favoritedBy.length > b.favoritedBy.length;
       })
+      response.render('main', {
+    snippets: results,
+    username: request.session.who[0].username,
     })
-  } else if (request.body.sorttype === 'leastfavorited') {
-  Snippet.find().sort({$size: "favoritedBy"}).exec(function(err, results) {
-    response.render('main', {
-      snippets: results,
-      username: request.session.who[0].username,
-      })
-    })
-  }
+  })
+}
 })
 
 server.post('/favorite/:snippet_id', function(request, response) {
