@@ -25,7 +25,7 @@
     <h3 class="subtitles-main"> Snippets from your circle </h3>
     <form method="post" action="/search">
       <label for="search">Search snippets by:</label>
-      <select class="ui dropdown" name="searchtype">
+      <select class="ui-dropdown" name="searchtype">
         <option value="username">Username</option>
         <option value="language">Language</option>
         <option value="tag">Tag</option>
@@ -35,7 +35,7 @@
     </form>
     <form method="post" action="/filter">
       <label for="filter">Filter snippets by:</label>
-      <select name="filtertype" id="filter">
+      <select class="ui-dropdown" name="filtertype" id="filter">
         <option value="all">All</option>
         <option value="mine">Mine</option>
         <option value="friends">Friends</option>
@@ -45,7 +45,7 @@
     </form>
     <form method="post" action="/sort">
       <label for="sort">Sort snippets by:</label>
-      <select name="sorttype" id="sort">
+      <select class="ui-dropdown" name="sorttype" id="sort">
         <option value="dateascending">Date: Ascending</option>
         <option value="datedescending">Date: Descending</option>
         <option value="mostfavorited">Most favorited</option>
@@ -58,12 +58,12 @@
     <ul>
         {{ #snippets }}
         <li>
-          <h4 id="snippet-title"><a href="/snippets/{{id}}">{{ title }}</a></h4>
+          <h4 class="snippet-title"><a href="/snippets/{{id}}">"{{ title }}"</a></h4>
           <h5 class="snippet-details">Language: {{ language }}</h5>
-          <h5>Author: {{ owner }}</h5>
-          <h5>Posted on: {{ timestamp }}</h5>
-          <span>{{ body }}</span><br>
-          <span>Notes from author: {{ notes }}</span>
+          <h5 class="snippet-details">Author: {{ owner }}</h5>
+          <h5 class="snippet-details">Posted on: {{ timestamp }}</h5>
+          <p class="snippet-details">{{ body }}</p><br>
+          <p class="snippet-details">Notes from author: {{ notes }}</p>
           <form method="post" action="/favorite/{{id}}">
             <input type="submit" value="Favorite this snippet" class="fave-btn" name="fave">
           </form>

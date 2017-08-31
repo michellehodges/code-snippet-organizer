@@ -14,7 +14,6 @@
 // PASS  ./sum.test.js
 // ✓ adds 1 + 2 to equal 3 (5ms)
 
-
 const server = require('./server');
 
 test('Able to register username and password.', () => {
@@ -22,3 +21,15 @@ test('Able to register username and password.', () => {
 })
 
 //how to know which function im running?
+////////////////////////////////////////////////////////////
+
+function multiplier(a, b) {
+  return a*b;
+}
+
+test ('multiplier works correctly', function(){
+  expect(multiplier(2,2)).toBe(4);
+  expect(multiplier(0,5)).toBe(4);
+  expect(multiplier(2,3)).toBe(6);
+  expect(multiplier(1,2)).toBe(2);
+})

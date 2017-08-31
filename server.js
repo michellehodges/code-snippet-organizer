@@ -17,7 +17,7 @@ module.exports = server;
 server.engine('mustache', mustache());
 server.set('views', './views');
 server.set('view engine', 'mustache');
-server.use(express.static('views'));
+server.use(express.static('public'));
 server.use(bodyparser.urlencoded( { extended: false }));
 server.use(session({
     secret: '98rncailevn-_DT83FZ@',
@@ -269,7 +269,7 @@ server.post('/sort', function(request, response) {
       username: request.session.who[0].username,
       })
     })
-  } else if (request.body.sorttype === 'mostfavorited') {
+  } else if (request.body.sorttype === 'leastfavorited') {
     Snippet.find({}, function(err, results) {
       results.sort(function(a,b){
         return a.favoritedBy.length > b.favoritedBy.length;

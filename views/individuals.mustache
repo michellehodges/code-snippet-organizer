@@ -1,17 +1,18 @@
 <!doctype html>
 <html>
   <head>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/styles.css">
     <link href="https://fonts.googleapis.com/css?family=Mukta+Mahee|Raleway|Titillium+Web" rel="stylesheet">
   </head>
   <body>
+    <span><a href="/main"> << Go back to mainpage </a></span>
     {{#snippet}}
-    <h1>Now viewing: "{{ title }}"</h1>
-    <h5>Language: {{ language }}</h5>
-    <h5>Author: {{ owner }}</h5>
-    <h5>Posted on: {{ timestamp }}</h5>
-    <span>{{ body }}</span><br>
-    <span>Notes from author: {{ notes }}</span>
+    <h1 class="snippet-title">Now viewing: "{{ title }}"</h1>
+    <h5 class="snippet-details">Language: {{ language }}</h5>
+    <h5 class="snippet-details">Author: {{ owner }}</h5>
+    <h5 class="snippet-details">Posted on: {{ timestamp }}</h5>
+    <span class="snippet-details">{{ body }}</span><br>
+    <span class="snippet-details">Notes from author: {{ notes }}</span>
     {{/snippet}}
     <form method="post" action="/favorite">
       <input type="submit" value="Favorite this snippet" class="fave-btn" name="fave">
