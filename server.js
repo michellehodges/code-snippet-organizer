@@ -301,7 +301,3 @@ server.post('/logout', function(request, response) {
 server.listen(3000, function() {
   console.log("ayyyyyyy its party time");
 })
-
-
-//TODO:
-//2. Create testing file using Jest
